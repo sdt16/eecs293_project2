@@ -16,6 +16,7 @@
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
+                <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -36,7 +37,7 @@
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
     <target name="SieveOfEratosthenes">
         <java classname="org.sdt16.eecs293.hw.two.SieveOfEratosthenes" failonerror="true" fork="yes">
-            <arg line="1000"/>
+	    <arg line="${args}"/>
             <classpath refid="eecs293_hw2.classpath"/>
         </java>
     </target>

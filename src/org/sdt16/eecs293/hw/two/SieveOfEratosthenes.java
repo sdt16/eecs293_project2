@@ -1,11 +1,11 @@
 package org.sdt16.eecs293.hw.two;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 
 /**
- * This is my sieve. It uses an {@link ArrayList} to store all of the 
+ * This is my sieve. It uses an {@link LinkedList} to store all of the 
  * numbers that haven't been eliminated yet. When it is decided that 
  * a number is defiantly prime, it is added to the {@link ArrayDeque}.
  * I chose a deque, because I wanted to be able to peek at both sides.
@@ -16,59 +16,53 @@ import java.util.ArrayList;
  */
 
 public class SieveOfEratosthenes {
-	ArrayList<Integer> numberList = new ArrayList<Integer>();
-	ArrayDeque<Integer> primeNumbers = new ArrayDeque<Integer>();
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		SieveOfEratosthenes sieve = new SieveOfEratosthenes();
+		int maxNum = getInput(args);
 		
-		int maxNum = 0;
-		try {
-			maxNum = Integer.parseInt(args[0]);
-			if (maxNum < 2) {
-				throw new NumberFormatException("The argument was less than 2.");
-			}
-		} catch (NumberFormatException e) {
-			System.out.println(e.getMessage());
-			System.exit(1);
-		}
+		LinkedList<Integer> numberList = new LinkedList<Integer>();
+		LinkedList<Integer> primeNumbers = new LinkedList<Integer>();
 		
 		for (int i = 2; i <= maxNum; i++) {
-			sieve.numberList.add(i);
+			numberList.add(i);
 		}
 		
-		while (!sieve.isNumberListAllPrimes()) {
-			if (sieve.primeNumbers.peek() != null) {
-				int indexOfNextPrime = sieve.numberList.indexOf(sieve.primeNumbers.peekLast())+1;
-				sieve.primeNumbers.add(sieve.numberList.get(indexOfNextPrime));
-				sieve.removeNumbers(sieve.numberList.get(indexOfNextPrime));
-			} else {
-				//empty, start with 2
-				sieve.primeNumbers.add(2);
-				sieve.removeNumbers(2);
-			}
+		while (!numberList.isEmpty()) {
+				primeNumbers.add(numberList.getFirst());
+				numberList = removeMultiples(numberList.getFirst(), numberList);
 		}
 		
-		for (Integer primeNumber : sieve.primeNumbers) {
+		for (Integer primeNumber : primeNumbers) {
 			System.out.println(primeNumber);
 		}	
 	}
 
-	private void removeNumbers(int i) {
-		int maxNum = i*2;
-		while (maxNum <= numberList.get(numberList.size()-1)) {
-			this.numberList.remove(Integer.valueOf(maxNum));
-			this.numberList.trimToSize();
-			maxNum += i;
-		}	
+	private static int getInput(String[] args) {
+		int maxNum = 0;
+		try {
+			if (args.length != 1) {
+				throw new IllegalArgumentException("The program takes one argument, the number to find primes up to.");
+			}
+			maxNum = Integer.parseInt(args[0]);
+			if (maxNum < 2) {
+				throw new NumberFormatException("The argument was less than 2.");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			System.exit(1);
+		}
+		return maxNum;
 	}
-	
-	private boolean isNumberListAllPrimes() {
-		Integer lastNumberOfNumberList = this.numberList.get(this.numberList.size()-1);
-		Integer lastNumberOfPrimeList = this.primeNumbers.peekLast();
-		return lastNumberOfNumberList == lastNumberOfPrimeList;
+
+	private static LinkedList<Integer> removeMultiples(int factor, LinkedList<Integer> numberList) {
+		for (Iterator<Integer> it = numberList.iterator(); it.hasNext();) {
+			if (it.next() % factor == 0) {
+				it.remove();
+			} 
+		}
+		return numberList;
 	}
 }
