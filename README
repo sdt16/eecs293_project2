@@ -1,0 +1,3 @@
+To build: just run 'ant'
+
+To run: the max prime number is the first argument.
