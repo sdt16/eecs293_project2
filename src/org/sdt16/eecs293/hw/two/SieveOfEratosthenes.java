@@ -97,7 +97,8 @@ public class SieveOfEratosthenes {
 	 * @return the new numberList with the multiples removed.
 	 */
 	private static LinkedList<Integer> removeMultiples(int factor, LinkedList<Integer> numberList) {
-		for (Iterator<Integer> it = numberList.iterator(); it.hasNext();) {
+		Iterator<Integer> it = numberList.iterator();
+		while (it.hasNext()) {
 			if (it.next() % factor == 0) {
 				it.remove();
 			} 
