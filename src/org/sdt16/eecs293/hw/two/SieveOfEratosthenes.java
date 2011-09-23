@@ -56,6 +56,29 @@ public class SieveOfEratosthenes {
 			System.out.println(primeNumber);
 		}	
 	}
+	
+	/**
+	 * This method removes all of the multiples in the numberList of the prime
+	 * number passed in factor. It iterates though the list, and sees if the 
+	 * modulus of the number currently being tested to the factor is 0. If it
+	 * is, we know it is a multiple of the prime, so it can't be prime itself. 
+	 * It is therefore removed. 
+	 * 
+	 * This method has the advantage of having constant time removal, and iterating
+	 * over the list exactly once for every factor.
+	 * @param factor The prime number you want to remove multiples of.
+	 * @param numberList The numberList you want to remove the multiples from.
+	 * @return the new numberList with the multiples removed.
+	 */
+	private static LinkedList<Integer> removeMultiples(int factor, LinkedList<Integer> numberList) {
+		Iterator<Integer> it = numberList.iterator();
+		while (it.hasNext()) {
+			if (it.next() % factor == 0) {
+				it.remove();
+			} 
+		}
+		return numberList;
+	}
 
 	/**
 	 * This method checks to make sure the args from the command line are valid.
@@ -83,26 +106,5 @@ public class SieveOfEratosthenes {
 		return maxNum;
 	}
 
-	/**
-	 * This method removes all of the multiples in the numberList of the prime
-	 * number passed in factor. It iterates though the list, and sees if the 
-	 * modulus of the number currently being tested to the factor is 0. If it
-	 * is, we know it is a multiple of the prime, so it can't be prime itself. 
-	 * It is therefore removed. 
-	 * 
-	 * This method has the advantage of having constant time removal, and iterating
-	 * over the list exactly once for every factor.
-	 * @param factor The prime number you want to remove multiples of.
-	 * @param numberList The numberList you want to remove the multiples from.
-	 * @return the new numberList with the multiples removed.
-	 */
-	private static LinkedList<Integer> removeMultiples(int factor, LinkedList<Integer> numberList) {
-		Iterator<Integer> it = numberList.iterator();
-		while (it.hasNext()) {
-			if (it.next() % factor == 0) {
-				it.remove();
-			} 
-		}
-		return numberList;
-	}
+
 }
